@@ -1,0 +1,4 @@
+rootProject.name = 'rsocket-requests-lease-parent'
+include 'rsocket-requests-lease'
+include 'rsocket-requests-lease-idl'
+
