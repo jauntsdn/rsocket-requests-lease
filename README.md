@@ -7,7 +7,7 @@ https://jauntsdn.com/post/rsocket-lease-concurrency-limiting/
 Limiting service latency with concurrency control by RSocket requests lease.  
 Application consists of single RSocket-RPC client connecting set of RSocket-RPC servers via reverse proxy.
 
-1. Start servers
+1. Start servers  
 `./lease_server.sh localhost 8309`  
 `./lease_server.sh localhost 8310`  
 `./lease_server.sh localhost 8311`  
