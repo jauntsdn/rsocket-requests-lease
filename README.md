@@ -1,4 +1,4 @@
-* ### RSocket-requests-lease
+### RSocket-requests-lease
 
 https://jauntsdn.com/post/rsocket-lease-concurrency-limiting/
 
