@@ -8,9 +8,9 @@ Limiting service latency with concurrency control by RSocket requests lease.
 Application consists of single RSocket-RPC client connecting set of RSocket-RPC servers via reverse proxy.
 
 1. Start servers
-`./lease_server.sh localhost 8309`
-`./lease_server.sh localhost 8310`
-`./lease_server.sh localhost 8311`
+`./lease_server.sh localhost 8309`  
+`./lease_server.sh localhost 8310`  
+`./lease_server.sh localhost 8311`  
 
 2. Start proxy
 `./lease_proxy.sh localhost 8308 localhost:8309,localhost:8310,localhost:8311`
