@@ -61,12 +61,12 @@ public class Server {
     Integer leaseAllowedRequests = Integer.getInteger("ALLOWED_REQUESTS", 200);
     String concurrencyDelay =
         System.getProperty("CONCURRENCY_DELAY", "10 => 2; 50 => 5; 120 => 20; => 5000");
-    String host = System.getProperty("HOST", "localhost");
-    Integer port = Integer.getInteger("PORT", 8309);
-    InetSocketAddress address = new InetSocketAddress(host, port);
+    String address = System.getProperty("ADDRESS", "localhost:8309");
 
-    logger.info("Server bind address is {}:{}", host, port);
+    logger.info("Server bind address is {}", address);
     logger.info("Lease allowed requests per second: {}", leaseAllowedRequests);
+
+    InetSocketAddress inetSocketAddress = address(address);
 
     Duration leaseTimeToLive = Duration.ofSeconds(1);
     Leases.ServerConfigurer leases =
@@ -74,15 +74,16 @@ public class Server {
             Leases.<ServiceStatsRecorder>create()
                 .sender(
                     new StaticLeaseSender(
-                        scheduler, address, leaseTimeToLive, leaseAllowedRequests))
+                        scheduler, inetSocketAddress, leaseTimeToLive, leaseAllowedRequests))
                 .stats(new ServiceStatsRecorder());
 
     RSocketFactory.receive()
         .lease(leases)
         .frameDecoder(PayloadDecoder.ZERO_COPY)
         .errorConsumer(errorConsumer())
-        .acceptor((setup, requesterRSocket) -> serverAcceptor(address, concurrencyDelay))
-        .transport(TcpServerTransport.create(TcpServer.create().addressSupplier(() -> address)))
+        .acceptor((setup, requesterRSocket) -> serverAcceptor(inetSocketAddress, concurrencyDelay))
+        .transport(
+            TcpServerTransport.create(TcpServer.create().addressSupplier(() -> inetSocketAddress)))
         .start()
         .flatMap(CloseableChannel::onClose)
         .block();
@@ -96,6 +97,13 @@ public class Server {
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty())));
+  }
+
+  private static InetSocketAddress address(String address) {
+    String[] hostPort = address.split(":");
+    String host = hostPort[0];
+    int port = Integer.parseInt(hostPort[1]);
+    return new InetSocketAddress(host, port);
   }
 
   private static class StaticLeaseSender

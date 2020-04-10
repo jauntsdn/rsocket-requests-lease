@@ -37,17 +37,16 @@ public class Proxy {
   private static final Logger logger = LoggerFactory.getLogger(Proxy.class);
 
   public static void main(String[] args) {
-
-    String host = System.getProperty("HOST", "localhost");
-    Integer port = Integer.getInteger("PORT", 8308);
+    String address = System.getProperty("ADDRESS", "localhost:8308");
     String backendAddresses =
         System.getProperty("SERVERS", "localhost:8309,localhost:8310,localhost:8311");
 
-    logger.info("Proxy bind address {}:{}", host, port);
+    logger.info("Proxy bind address {}", address);
     logger.info("Backend servers addresses {}", backendAddresses);
 
-    InetSocketAddress address = new InetSocketAddress(host, port);
-    TcpServer tcpServer = TcpServer.create().addressSupplier(() -> address);
+    InetSocketAddress inetSocketAddress = address(address);
+
+    TcpServer tcpServer = TcpServer.create().addressSupplier(() -> inetSocketAddress);
     TcpServerTransport tcpServerTransport = TcpServerTransport.create(tcpServer);
 
     RSocket leastLoadedBalancerRSocket =
@@ -74,6 +73,13 @@ public class Proxy {
             })
         .map(Proxy::connect)
         .collect(Collectors.toSet());
+  }
+
+  private static InetSocketAddress address(String address) {
+    String[] hostPort = address.split(":");
+    String host = hostPort[0];
+    int port = Integer.parseInt(hostPort[1]);
+    return new InetSocketAddress(host, port);
   }
 
   private static Mono<RSocket> connect(InetSocketAddress address) {

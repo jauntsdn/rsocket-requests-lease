@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./gradlew rsocket-requests-lease:runClient -DHOST=$1 -DPORT=$2
+./gradlew rsocket-requests-lease:runClient -DADDRESS=$1

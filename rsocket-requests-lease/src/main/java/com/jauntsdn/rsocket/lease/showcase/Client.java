@@ -45,11 +45,12 @@ public class Client {
   private static final String divider = repeat("=", 80);
 
   public static void main(String... args) {
+    String address = System.getProperty("ADDRESS", "localhost:8308");
     Duration duration = Duration.ofSeconds(Integer.getInteger("DURATION", 120));
-    String host = System.getProperty("HOST", "localhost");
-    Integer port = Integer.getInteger("PORT", 8308);
 
-    logger.info("Client connects proxy address {}:{}", host, port);
+    logger.info("Client connects proxy address {}", address);
+
+    InetSocketAddress inetSocketAddress = address(address);
 
     Stats stats = new Stats();
 
@@ -72,8 +73,7 @@ public class Client {
     RSocketFactory.connect()
         .frameDecoder(PayloadDecoder.ZERO_COPY)
         .transport(
-            TcpClientTransport.create(
-                TcpClient.create().addressSupplier(() -> new InetSocketAddress(host, port))))
+            TcpClientTransport.create(TcpClient.create().addressSupplier(() -> inetSocketAddress)))
         .start()
         .flatMapMany(
             rSocket -> {
@@ -186,6 +186,13 @@ public class Client {
         }
       }
     }
+  }
+
+  private static InetSocketAddress address(String address) {
+    String[] hostPort = address.split(":");
+    String host = hostPort[0];
+    int port = Integer.parseInt(hostPort[1]);
+    return new InetSocketAddress(host, port);
   }
 
   private static String repeat(String str, int count) {

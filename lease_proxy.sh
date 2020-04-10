@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./gradlew rsocket-requests-lease:runProxy -DHOST=$1 -DPORT=$2 -DSERVERS=$3
+./gradlew rsocket-requests-lease:runProxy -DADDRESS=$1 -DSERVERS=$2
