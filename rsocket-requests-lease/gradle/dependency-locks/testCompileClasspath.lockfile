@@ -2,9 +2,9 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 com.google.protobuf:protobuf-java:3.11.4
-com.jauntsdn.rsocket:rsocket-core:0.9.4
-com.jauntsdn.rsocket:rsocket-rpc-core:0.9.4
-com.jauntsdn.rsocket:rsocket-transport-netty:0.9.4
+com.jauntsdn.rsocket:rsocket-core:0.9.5
+com.jauntsdn.rsocket:rsocket-rpc-core:0.9.5
+com.jauntsdn.rsocket:rsocket-transport-netty:0.9.5
 io.micrometer:micrometer-core:1.4.1
 io.netty:netty-buffer:4.1.48.Final
 io.netty:netty-codec-http2:4.1.48.Final

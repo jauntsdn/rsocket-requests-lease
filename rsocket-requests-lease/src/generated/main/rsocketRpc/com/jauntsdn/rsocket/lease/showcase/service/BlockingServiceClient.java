@@ -1,7 +1,7 @@
 package com.jauntsdn.rsocket.lease.showcase.service;
 
 @javax.annotation.Generated(
-    value = "by RSocket RPC proto compiler (version 0.9.4-feature-adaptive-lease-SNAPSHOT)",
+    value = "by RSocket RPC proto compiler (version 0.9.5)",
     comments = "Source: com/jauntsdn/rsocket/lease/showcase/service/leaseservice.proto")
 @com.jauntsdn.rsocket.rpc.annotations.internal.Generated(
     type = com.jauntsdn.rsocket.rpc.annotations.internal.ResourceType.CLIENT,
